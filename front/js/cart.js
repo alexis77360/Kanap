@@ -17,10 +17,6 @@ function removeItem(e) {
 
   window.location.reload()
 
-
-
-
-
   
 }
 
@@ -40,8 +36,6 @@ function changeQuantity(e) {
 
 
   }
-
-
 
 
 //! Sélection HTML du cart
@@ -103,7 +97,7 @@ function showCart(items) {
         showCart(cart);
         cartSection.onchange= changeQuantity;
 
-/*         let btns = document.getElementsByClassName('deleteItem');
+        let btns = document.getElementsByClassName('deleteItem');
         
         console.log(btns);
         for (let toto of btns) {
@@ -114,22 +108,13 @@ function showCart(items) {
           
         }
 
- */
 
-        let deleteItems = document.getElementsByClassName('deleteItem');
-  
-  for (const deleteItem of deleteItems) {
 
-    console.log("Hello");
-    deleteItem.onclick = removeItem;    
+
   } 
 
-
-
         
-
-        
-      }
+      
     else {
       //! Si le panier est vide alors afficher le message
         h1.innerHTML = `Votre panier est actuellement vide`;
