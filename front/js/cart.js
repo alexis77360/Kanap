@@ -149,7 +149,7 @@ const order = () => {
 
       //? Push ID produit du local storage dans le tableau "products"
       for (let article of panier) {
-        products.push(listId.idProduct);
+        products.push(article.idProduct);
       }
       console.log(products);
       console.log(contact);
@@ -174,3 +174,5 @@ const order = () => {
     },
     body: JSON.stringify({ contact, products }),
   }); */
+
+  order();
