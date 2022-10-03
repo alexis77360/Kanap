@@ -93,3 +93,5 @@ function getCart() {
     //? Opérateur de coalescence ( si null/undefined renvoie la 2eme valeur)
     return JSON.parse(localStorage.getItem("monPanier")) ?? [];
 }
+
+

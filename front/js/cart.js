@@ -4,6 +4,20 @@ function getCart() {
   return JSON.parse(localStorage.getItem("monPanier")) ?? [];
 }
 
+//! Requete d'un produit
+function getProduct(id) {
+
+  return fetch(`http://localhost:3000/api/products/${id}`)
+      .then(res => {
+          if (!res.ok) {
+              throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+          }
+          return res.json();
+      })
+
+}
+
+
 //! Fonction pour supprimer un article
 function removeItem(e) {
 
@@ -13,7 +27,7 @@ function removeItem(e) {
 
   localStorage.setItem("monPanier", JSON.stringify(newCart));
 
-  window.location.reload()
+  window.location.reload();
 
 
 }
@@ -36,10 +50,37 @@ function changeQuantity(e) {
 
 
 //! Sélection HTML du cart
-const cartPrice = document.getElementsByClassName("cart__price");
+const totalPrice = document.getElementById("totalPrice");
 const cartSection = document.getElementById("cart__items");
-const cartOrder = document.getElementsByClassName("cart__order");
-const h1 = document.getElementsByTagName("h1");
+const totalQuantity = document.getElementById("totalQuantity");
+/* const h1 = document.getElementsByTagName("h1"); */
+
+//! Retoune le HTML
+function getCartItemHTML(product, item)
+{
+  return `<article class="cart__item" data-id="${item.idProduct}" data-color="${item.colorProduct}">
+  <div class="cart__item__img">
+    <img src="${product.imageUrl}" alt="${product.altTxt}">
+  </div>
+  <div class="cart__item__content">
+    <div class="cart__item__content__description">
+      <h2>${product.name}</h2>
+      <p>${item.colorProduct}</p>
+      <p>${product.price} €</p>
+    </div>
+    <div class="cart__item__content__settings">
+      <div class="cart__item__content__settings__quantity">
+        <p>Qté : </p>
+        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.qtyProduct}">
+      </div>
+      <div class="cart__item__content__settings__delete">
+      <p class="deleteItem">Supprimer</p>
+      </div>
+    </div>
+  </div>
+</article>`;
+}
+
 
 
 //! Fonction pour afficher le panier
@@ -49,46 +90,28 @@ async function showCart(items) {
 
   for (const item of items) {
 
-    await fetch(`http://localhost:3000/api/products/${item.idProduct}`)
-      .then((response) => response.json())
-      .then((data) => {
+    await getProduct(item.idProduct)
+      .then((prod) => {
 
-        cartSection.innerHTML += `<article class="cart__item" data-id="${item.idProduct}" data-color="${item.colorProduct}">
-                <div class="cart__item__img">
-                  <img src="${data.imageUrl}" alt="${data.altTxt}">
-                </div>
-                <div class="cart__item__content">
-                  <div class="cart__item__content__description">
-                    <h2>${data.name}</h2>
-                    <p>${item.colorProduct}</p>
-                    <p>${data.price} €</p>
-                  </div>
-                  <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.qtyProduct}">
-                    </div>
-                    <div class="cart__item__content__settings__delete">
-                    <p class="deleteItem">Supprimer</p>
-                    </div>
-                  </div>
-                </div>
-              </article>`;
+        cartSection.innerHTML += getCartItemHTML(prod,item);
         //! Calcul du prix total
-        price += data.price * item.qtyProduct;
-        document.getElementById("totalPrice").innerHTML = price;
+        price += prod.price * item.qtyProduct;
+        document.getElementById("totalPrice").textContent = price;
       });
 
     //! Calcul de la quantité totale
     qty += parseInt(item.qtyProduct);
-    document.getElementById("totalQuantity").innerHTML = qty;
+    document.getElementById("totalQuantity").textContent = qty;
   }
   return true;
 }
 let cart = getCart();
 
+
+
 if (cart.length) {
 
+  
   showCart(cart)
     .then(() => {
       cartSection.onchange = changeQuantity;
@@ -98,29 +121,103 @@ if (cart.length) {
       for (let btn of btns) {
 
         btn.onclick = removeItem;
+
+        
       }
     })
 } else {
   //! Si le panier est vide alors afficher le message
-  h1.innerHTML = `Votre panier est actuellement vide`;
-  cartOrder.innerHTML = "0";
-  cartPrice.innerHTML = "0";
+
+  
+  cartSection.innerHTML = "<h1> est actuellement vide </h1>";
+  totalPrice.textContent = "0";
+  totalQuantity.textContent = "0";
+}
+//?REGEX 
+
+//! Verif Regex FirstName
+function testFirstName(firstName){
+
+let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(firstName); 
+
+if(!regexOk && firstName){
+  document.getElementById("firstNameErrorMsg").textContent = "Nom invalide";
+
+}
+return regexOk;
 }
 
+//! Verif Regex FirstName
+function testFirstName(firstName){
+
+  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(firstName); 
+  
+  if(!regexOk && firstName){
+    document.getElementById("firstNameErrorMsg").textContent = "Prénom invalide";
+  
+  }
+  return regexOk;
+  }
+
+  //! Verif Regex Name
+function testName(name){
+
+  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(name); 
+  
+  if(!regexOk && name){
+    document.getElementById("lastNameErrorMsg").textContent = "Nom invalide";
+  
+  }
+  return regexOk;
+  }
+
+//! Verif Regex adresse
+function testlocation(adresse){
+
+  let regexOk = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/.test(adresse); 
+  
+  if(!regexOk && adresse){
+    document.getElementById("addressErrorMsg").textContent = "Adresse invalide";
+  
+  }
+  return regexOk;
+  }
+
+  //! Verif Regex ville
+function testcity(ville){
+
+  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(ville); 
+  
+  if(!regexOk && ville){
+    document.getElementById("cityErrorMsg").textContent = "Ville invalide";
+  
+  }
+  return regexOk;
+  }
+
+  //! Verif Regex email
+function testemail(email){
+
+  let regexOk = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(email); 
+  
+  if(!regexOk && email){
+    document.getElementById("emailErrorMsg").textContent = "Email invalide";
+  
+  }
+  return regexOk;
+  }
 
 
+/*  const regexName = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/;
+  const regexLocation = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/;
+  const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; */
+//? Fin REGEX
 
 //! Gestion du formulaire
-
-
 
 //? Vérifier les informations du formulaire de contact
 const order = () => {
 
-  const regexName = /([a-zA-Z]{3,30}\s*)+/;
-  const regexLocation = /([a-zA-Z]{3,30}\s*)+/
-  const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
- 
 
   const orderBtn = document.getElementById("order");
 
@@ -136,11 +233,11 @@ const order = () => {
     };
     //? Test des champs du formulaire
     if (
-      (regexName.test(contact.firstName) == true) &&
-      (regexName.test(contact.lastName) == true) &&
-      (regexLocation.test(contact.city) == true) &&
-      (regexEmail.test(contact.email) == true) &&
-      (regexLocation.test(contact.address) == true)
+      (testFirstName(contact.firstName)) &&
+      (testFirstName(contact.lastName) == true) &&
+      (testcity (contact.city) == true) &&
+      (testemail(contact.email) == true) &&
+      (testlocation(contact.address) == true)
     ) {
       //? Si le formulaire ok, création du tableau "products" pour back
       e.preventDefault();
@@ -150,16 +247,23 @@ const order = () => {
       //? Push ID produit du local storage dans le tableau "products"
       for (let article of panier) {
         products.push(article.idProduct);
+        
       }
+
+      //! Retirer doublon du tableau
+      products = [...new Set(products)];
+      
       console.log(products);
       console.log(contact);
       alert("Commande effectuée !");
 
+      /* window.location.href = "confirmation.html"; */
       //! Appeler la fonction POST avec en param l'objet contact + tableau products
       /*  maméthodepourPOST(contact, products);*/ 
-    } else {
-      
-      alert("Tous les champs doivent être remplis");
+    }else
+    {
+      e.preventDefault();
+      console.log("Veuillez remplir correctement le formulaire");
     }
   });
 };
@@ -176,3 +280,5 @@ const order = () => {
   }); */
 
   order();
+
+
