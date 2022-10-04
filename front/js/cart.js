@@ -8,12 +8,12 @@ function getCart() {
 function getProduct(id) {
 
   return fetch(`http://localhost:3000/api/products/${id}`)
-      .then(res => {
-          if (!res.ok) {
-              throw new Error(`HTTP ${res.status} - ${res.statusText}`);
-          }
-          return res.json();
-      })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+      }
+      return res.json();
+    })
 
 }
 
@@ -56,8 +56,7 @@ const totalQuantity = document.getElementById("totalQuantity");
 /* const h1 = document.getElementsByTagName("h1"); */
 
 //! Retoune le HTML
-function getCartItemHTML(product, item)
-{
+function getCartItemHTML(product, item) {
   return `<article class="cart__item" data-id="${item.idProduct}" data-color="${item.colorProduct}">
   <div class="cart__item__img">
     <img src="${product.imageUrl}" alt="${product.altTxt}">
@@ -93,7 +92,7 @@ async function showCart(items) {
     await getProduct(item.idProduct)
       .then((prod) => {
 
-        cartSection.innerHTML += getCartItemHTML(prod,item);
+        cartSection.innerHTML += getCartItemHTML(prod, item);
         //! Calcul du prix total
         price += prod.price * item.qtyProduct;
         document.getElementById("totalPrice").textContent = price;
@@ -108,10 +107,9 @@ async function showCart(items) {
 let cart = getCart();
 
 
-
 if (cart.length) {
 
-  
+
   showCart(cart)
     .then(() => {
       cartSection.onchange = changeQuantity;
@@ -122,96 +120,93 @@ if (cart.length) {
 
         btn.onclick = removeItem;
 
-        
+
       }
     })
 } else {
   //! Si le panier est vide alors afficher le message
 
-  
+
   cartSection.innerHTML = "<h1> est actuellement vide </h1>";
   totalPrice.textContent = "0";
   totalQuantity.textContent = "0";
-}
-//?REGEX 
-
-//! Verif Regex FirstName
-function testFirstName(firstName){
-
-let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(firstName); 
-
-if(!regexOk && firstName){
-  document.getElementById("firstNameErrorMsg").textContent = "Nom invalide";
-
-}
-return regexOk;
-}
-
-//! Verif Regex FirstName
-function testFirstName(firstName){
-
-  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(firstName); 
   
-  if(!regexOk && firstName){
+}
+
+
+
+
+//? Debut REGEX 
+
+
+//! Verif Regex FirstName
+function testFirstName(firstName) {
+
+  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{3,}$/.test(firstName);
+
+  if (!regexOk && firstName) {
     document.getElementById("firstNameErrorMsg").textContent = "Prénom invalide";
-  
+
   }
   return regexOk;
-  }
+}
 
-  //! Verif Regex Name
-function testName(name){
+//! Verif Regex Name
+function testName(name) {
 
-  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(name); 
-  
-  if(!regexOk && name){
+  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{3,}$/.test(name);
+
+  if (!regexOk && name) {
     document.getElementById("lastNameErrorMsg").textContent = "Nom invalide";
-  
+
   }
   return regexOk;
-  }
+}
 
 //! Verif Regex adresse
-function testlocation(adresse){
+function testlocation(adresse) {
 
-  let regexOk = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/.test(adresse); 
-  
-  if(!regexOk && adresse){
+  let regexOk = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/.test(adresse);
+
+  if (!regexOk && adresse) {
     document.getElementById("addressErrorMsg").textContent = "Adresse invalide";
-  
+
   }
   return regexOk;
-  }
+}
 
-  //! Verif Regex ville
-function testcity(ville){
+//! Verif Regex ville
+function testcity(ville) {
 
-  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(ville); 
-  
-  if(!regexOk && ville){
+  let regexOk = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/.test(ville);
+
+  if (!regexOk && ville) {
     document.getElementById("cityErrorMsg").textContent = "Ville invalide";
-  
+
   }
   return regexOk;
-  }
+}
 
-  //! Verif Regex email
-function testemail(email){
+//! Verif Regex email
+function testemail(email) {
 
-  let regexOk = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(email); 
-  
-  if(!regexOk && email){
+  let regexOk = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(email);
+
+  if (!regexOk && email) {
     document.getElementById("emailErrorMsg").textContent = "Email invalide";
-  
+
   }
   return regexOk;
-  }
+}
 
 
 /*  const regexName = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/;
   const regexLocation = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/;
   const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; */
 //? Fin REGEX
+
+
+
 
 //! Gestion du formulaire
 
@@ -223,7 +218,7 @@ const order = () => {
 
   orderBtn.addEventListener("click", (e) => {
     //?Objet contact pour la requête POST
-    
+
     let contact = {
       firstName: document.querySelector("#firstName").value,
       lastName: document.querySelector("#lastName").value,
@@ -234,8 +229,8 @@ const order = () => {
     //? Test des champs du formulaire
     if (
       (testFirstName(contact.firstName)) &&
-      (testFirstName(contact.lastName) == true) &&
-      (testcity (contact.city) == true) &&
+      (testName(contact.lastName) == true) &&
+      (testcity(contact.city) == true) &&
       (testemail(contact.email) == true) &&
       (testlocation(contact.address) == true)
     ) {
@@ -247,38 +242,55 @@ const order = () => {
       //? Push ID produit du local storage dans le tableau "products"
       for (let article of panier) {
         products.push(article.idProduct);
-        
+
       }
 
       //! Retirer doublon du tableau
       products = [...new Set(products)];
-      
+
       console.log(products);
       console.log(contact);
       alert("Commande effectuée !");
 
-      /* window.location.href = "confirmation.html"; */
-      //! Appeler la fonction POST avec en param l'objet contact + tableau products
-      /*  maméthodepourPOST(contact, products);*/ 
-    }else
-    {
+
+      //! Envoie par POST avec en param l'objet contact + tableau product
+
+      //? Création de l'objet à envoyer
+      const order = {
+        contact,
+        products: products,
+      };
+
+
+      //? Paramètres de la requête POST
+      const options = {
+        method: "POST",
+        body: JSON.stringify(order),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      //? Requête avec contact et la liste des id produits. L'API renvoi l'id de commande
+      fetch("http://localhost:3000/api/products/order", options)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          //?on redirige vers la page confirmation avec id de la commande
+          document.location.href = "confirmation.html?id=" + data.orderId;
+        })
+        //? sinon on affiche l'erreur de la requete
+        .catch((err) => {
+          console.log("Erreur dans la requête : " + err.message);
+        });
+
+
+    } else {
       e.preventDefault();
       console.log("Veuillez remplir correctement le formulaire");
     }
   });
 };
 
-
-
-/*   //? Envoyer le formulaire de contact + tableau products au back avec POST
-  fetch("http://localhost:3000/api/products/order", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ contact, products }),
-  }); */
-
-  order();
-
-
+order();

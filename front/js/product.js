@@ -67,7 +67,7 @@ function addProduct(product) {
 
             let cart = getCart();
 
-            /* //! Renvoi l'élément trouvé */
+            //! Renvoi l'élément trouvé 
             const found = cart.find(cartItem => cartItem.idProduct === idProduct && cartItem.colorProduct === colorProduct);
 
             if (found == undefined) {
