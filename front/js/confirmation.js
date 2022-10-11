@@ -1,9 +1,10 @@
-//! Récupèrer l'id dans le liens pour l'afficher
-function getOrderId() {
+//! Récupérer l'id dans le lien pour l'afficher
+function getParam(param) {
     let url = new URL(window.location.href);
-    let id = url.searchParams.get("id");
+    let result = url.searchParams.get(param);
 
-    document.getElementById("orderId").textContent = id;
-    localStorage.clear();
+    return result;
 }
-getOrderId();
+let id = getParam("id");
+document.getElementById("orderId").textContent = id;
+localStorage.clear();

@@ -1,4 +1,4 @@
-//! Requete d'un produit
+//? Requête d'un produit
 function getProduct(id) {
 
     return fetch(`http://localhost:3000/api/products/${id}`)
@@ -8,11 +8,10 @@ function getProduct(id) {
             }
             return res.json();
         })
-
 }
 
 
-// !!création du DOM pour la page produit
+//? création du DOM pour la page produit
 let cardCreation = function (product) {
 
 
@@ -39,7 +38,7 @@ let cardCreation = function (product) {
     }
 };
 
-//! Appel de l'api + appel création dom*/
+//! Appel de l'api + appel création du DOM
 
 let url = new URL(window.location.href);
 let id = url.searchParams.get("id");
@@ -87,11 +86,8 @@ function addProduct(product) {
     }
 }
 
-
-//! Affichage du panier dans le local storage
+//? Affichage du panier dans le local storage
 function getCart() {
-    //? Opérateur de coalescence ( si null/undefined renvoie la 2eme valeur)
+    //! Opérateur de coalescence ( si null/undefined renvoie la 2eme valeur)
     return JSON.parse(localStorage.getItem("monPanier")) ?? [];
 }
-
-

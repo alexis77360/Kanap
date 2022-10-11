@@ -4,7 +4,7 @@ function getCart() {
   return JSON.parse(localStorage.getItem("monPanier")) ?? [];
 }
 
-//! Requete d'un produit
+//! Requête d'un produit
 function getProduct(id) {
 
   return fetch(`http://localhost:3000/api/products/${id}`)
@@ -53,9 +53,9 @@ function changeQuantity(e) {
 const totalPrice = document.getElementById("totalPrice");
 const cartSection = document.getElementById("cart__items");
 const totalQuantity = document.getElementById("totalQuantity");
-/* const h1 = document.getElementsByTagName("h1"); */
 
-//! Retoune le HTML
+
+//! Retourne le HTML
 function getCartItemHTML(product, item) {
   return `<article class="cart__item" data-id="${item.idProduct}" data-color="${item.colorProduct}">
   <div class="cart__item__img">
@@ -79,7 +79,6 @@ function getCartItemHTML(product, item) {
   </div>
 </article>`;
 }
-
 
 
 //! Fonction pour afficher le panier
@@ -124,20 +123,15 @@ if (cart.length) {
       }
     })
 } else {
+
   //! Si le panier est vide alors afficher le message
-
-
   cartSection.innerHTML = "<h1> est actuellement vide </h1>";
   totalPrice.textContent = "0";
   totalQuantity.textContent = "0";
   
 }
 
-
-
-
 //? Debut REGEX 
-
 
 //! Verif Regex FirstName
 function testFirstName(firstName) {
@@ -199,17 +193,10 @@ function testemail(email) {
   return regexOk;
 }
 
-
-/*  const regexName = /^[a-zA-Zéèêëàâäîïôöûüùç\- ]{2,}$/;
-  const regexLocation = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/;
-  const regexEmail = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/; */
 //? Fin REGEX
 
 
-
-
 //! Gestion du formulaire
-
 //? Vérifier les informations du formulaire de contact
 const order = () => {
 
@@ -217,7 +204,7 @@ const order = () => {
   const orderBtn = document.getElementById("order");
 
   orderBtn.addEventListener("click", (e) => {
-    //?Objet contact pour la requête POST
+    //? Objet contact pour la requête POST
 
     let contact = {
       firstName: document.querySelector("#firstName").value,
@@ -253,7 +240,7 @@ const order = () => {
       alert("Commande effectuée !");
 
 
-      //! Envoie par POST avec en param l'objet contact + tableau product
+      //! Envoi par POST avec en param l'objet contact + tableau product
 
       //? Création de l'objet à envoyer
       const order = {
@@ -268,7 +255,7 @@ const order = () => {
         body: JSON.stringify(order),
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", //! Ne pas oublier pour node.js
         },
       };
 
@@ -280,11 +267,10 @@ const order = () => {
           //?on redirige vers la page confirmation avec id de la commande
           document.location.href = "confirmation.html?id=" + data.orderId;
         })
-        //? sinon on affiche l'erreur de la requete
+        //? sinon on affiche l'erreur de la requête
         .catch((err) => {
           console.log("Erreur dans la requête : " + err.message);
         });
-
 
     } else {
       e.preventDefault();
